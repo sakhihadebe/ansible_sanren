@@ -1,0 +1,16 @@
+- name: "Change to the /var directory"
+  shell: cd /var
+
+- name: "Create a directory"
+  file: path=/var/simplesamlphp state=directory mode=0755 owner=root group=root
+
+- name: "Download the latest simplesamlphp software"
+  get_url: url=https://github.com/simplesamlphp/simplesamlphp/releases/download/v1.15.4/simplesamlphp-1.15.4.tar.gz sha256sum=349cf5d9f9ecbbced0e6f6794d26d5242fc9dafbd34268aeeb200182c24f88a5 dest=/var/simplesamlphp-1.15.4.tar.gz mode=0644
+
+- name: "Decompress the file"
+  unarchive: src=/var/simplesamlphp-1.15.4.tar.gz dest=/var/ remote_src=yes directory_mode=yes mode=0755 owner=root group=root
+
+- name: "Copy contenst of simplesamlphp-1.15.4/ to /var/simplesamlphp"
+  copy: src=/var/simplesamlphp-1.15.4 dest=/var/simplesamlphp remote_src=yes directory_mode=yes mode=0755 owner=root group=root
+  
+

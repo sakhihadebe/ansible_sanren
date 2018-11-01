@@ -1,0 +1,3 @@
+- name: "Rename the folder"
+  command: mv /etc/ansible/sakhi /etc/ansible/sokhushuwq
+

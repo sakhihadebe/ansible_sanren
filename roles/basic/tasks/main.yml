@@ -1,0 +1,9 @@
+- name: "Installing Net-Tools"
+  yum: name=net-tools state=present update_cache=yes
+
+- name: "Install other tools, NANO and WGET"
+  yum: name={{ item }} state=present update_cache=yes
+  with_items:
+    - nano
+    - wget
+    - bind-utils

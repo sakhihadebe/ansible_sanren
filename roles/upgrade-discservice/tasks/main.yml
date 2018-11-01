@@ -1,0 +1,41 @@
+- name: "Change to the /var directory"
+  shell: cd /var
+
+- name: "Create a directory"
+  file: path=/var/simplesamlphp state=directory mode=0755 owner=root group=root
+
+- name: "Download the latest simplesamlphp software"
+  get_url: url=https://github.com/simplesamlphp/simplesamlphp/releases/download/v1.15.4/simplesamlphp-1.15.4.tar.gz sha256sum=349cf5d9f9ecbbced0e6f6794d26d5242fc9dafbd34268aeeb200182c24f88a5 dest=/var/simplesamlphp-1.15.4.tar.gz mode=0644
+
+- name: "Decompress the file"
+  unarchive: src=/var/simplesamlphp-1.15.4.tar.gz dest=/var/ remote_src=yes directory_mode=yes mode=0755 owner=root group=root
+
+- name: "Copy contents of simplesamlphp-1.15.4/ to /var/simplesamlphp"
+  command: cp -r /var/simplesamlphp-1.15.4/. /var/simplesamlphp/
+
+- name: "Change to the /var/simplesamlphp directory"
+  shell: cd /var/simplesamlphp
+
+- name: "Copy the config/ directory contents from previous version"
+  command: cp -r /var/simplesamlphp.old.old/config/. /var/simplesamlphp/config/
+
+- name: "Copy the metadata/ directory contents from previous version"
+  command: cp -r /var/simplesamlphp.old.old/metadata/. /var/simplesamlphp/metadata/
+
+- name: "Copy the cert/ directory contents from previous version"
+  command: cp -r /var/simplesamlphp.old.old/cert/. /var/simplesamlphp/cert/
+
+- name: "Copy the safire.xml file from previous version"
+  command: cp -r /var/simplesamlphp.old.old/www/safire.xml /var/simplesamlphp/www/
+
+- name: "Enable the cron module"
+  file: path=/var/simplesamlphp/modules/cron/enable state=touch
+
+- name: "Enable the metarefresh module"
+  file: path=/var/simplesamlphp/modules/metarefresh/enable state=touch
+
+- name: "Grant permissions to the webserver user"
+  file: path=/var/simplesamlphp/metadata/metarefresh-safireaccess owner=www-data group=root
+
+- name: "Grant permissions to the webserver user"
+  file: path=/var/simplesamlphp/metadata/metarefresh-redclaraaccess owner=www-data group=root
